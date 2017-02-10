@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1486743768084
+Build-Jdk: 1.8.0_112
+Built-By: dkrizic
+Bundle-ManifestVersion: 2
+Bundle-Name: ogm-osgi-demo-api
+Bundle-SymbolicName: org.neo4j.ogm.osgi-demo-api
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.prodyna.osgi.hello;version="1.0.0.SNAPSHOT"
+JAVA_1_7_HOME: /Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Content
+ s/Home
+JAVA_1_8_HOME: /Library/Java/JavaVirtualMachines/jdk1.8.0_73.jdk/Content
+ s/Home
+Tool: Bnd-1.50.0
