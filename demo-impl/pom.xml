@@ -68,7 +68,6 @@
                 <configuration>
                     <instructions>
                         <Export-Package />
-                        <Bundle-Activator>org.neo4j.ogm.osgi.impl.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>

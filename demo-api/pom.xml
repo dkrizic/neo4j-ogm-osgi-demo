@@ -39,7 +39,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Packages>org.neo4j.ogm.osgi.demo</Export-Packages>
                         <Fragment-Host>neo4j-ogm-api</Fragment-Host>
                     </instructions>
                 </configuration>

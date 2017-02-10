@@ -35,7 +35,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Activator>org.neo4j.ogm.osgi.demo.client.Activator</Activator>
+                        <Bundle-Activator>org.neo4j.ogm.osgi.demo.client.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>

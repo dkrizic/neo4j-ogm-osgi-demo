@@ -6,7 +6,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-public class Activator extends BundleActivator {
+public class Activator implements BundleActivator {
 
     @Override public void start(BundleContext bundleContext) throws Exception {
         final ServiceReference serviceReference =
