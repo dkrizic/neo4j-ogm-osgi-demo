@@ -9,20 +9,14 @@ import org.neo4j.ogm.session.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-@ApplicationScoped
+// @ApplicationScoped
 public class OGMSessionProducer {
 
     private Configuration configuration;
     private SessionFactory sessionFactory;
     private Class driverClass = BoltDriver.class;
 
-    @Inject
+    // @Inject
     private Logger log;
 
     public OGMSessionProducer() {
@@ -30,7 +24,7 @@ public class OGMSessionProducer {
         start();
     }
 
-    @PostConstruct
+    // @PostConstruct
     public void start() {
         log.info("Starting");
         configuration = new Configuration();
@@ -43,7 +37,7 @@ public class OGMSessionProducer {
         log.info("Session factory created " + sessionFactory);
     }
 
-    @Produces
+    // @Produces
     public synchronized Session produceSession() {
         log.info("Creating session with sessionFactory " + sessionFactory );
         Session session = sessionFactory.openSession();
@@ -51,7 +45,7 @@ public class OGMSessionProducer {
         return session;
     }
 
-    @PreDestroy
+    // @PreDestroy
     public void stop() {
         /*
         if( sessionFactory != null ) {

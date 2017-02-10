@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1486749927978
+Bnd-LastModified: 1486750095082
 Build-Jdk: 1.8.0_112
 Built-By: dkrizic
 Bundle-ManifestVersion: 2
-Bundle-Name: ogm-osgi-demo-api
+Bundle-Name: Neo4j-OGM Demo API
 Bundle-SymbolicName: org.neo4j.ogm.osgi-demo-api
 Bundle-Version: 1.0.0.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin

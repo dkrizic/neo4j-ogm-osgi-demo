@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ogm-osgi-demo-impl</artifactId>
+    <name>Neo4j-OGM Demo Impl</name>
     <packaging>bundle</packaging>
 
     <dependencies>

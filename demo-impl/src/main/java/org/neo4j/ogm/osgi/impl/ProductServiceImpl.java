@@ -12,10 +12,10 @@ import java.util.Collection;
 
 public class ProductServiceImpl implements ProductService {
 
-    @Inject
+    // @Inject
     private Logger log;
 
-    @Inject
+    // @Inject
     private Session session;
 
     public ProductServiceImpl() {
