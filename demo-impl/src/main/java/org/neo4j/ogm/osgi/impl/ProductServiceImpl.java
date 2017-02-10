@@ -2,8 +2,10 @@ package org.neo4j.ogm.osgi.impl;
 
 import org.neo4j.ogm.osgi.demo.Product;
 import org.neo4j.ogm.osgi.demo.ProductService;
+import org.neo4j.ogm.osgi.impl.common.OGMSessionProducer;
 import org.neo4j.ogm.session.Session;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -17,7 +19,8 @@ public class ProductServiceImpl implements ProductService {
     private Session session;
 
     public ProductServiceImpl() {
-        // default
+        log = LoggerFactory.getLogger( getClass() );            // TODO: Replace with CDI
+        session = new OGMSessionProducer().produceSession();    // TODO: Replace with CDI
     }
 
     @Override

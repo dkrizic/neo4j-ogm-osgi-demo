@@ -7,6 +7,7 @@ import org.neo4j.ogm.osgi.demo.Product;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -23,6 +24,11 @@ public class OGMSessionProducer {
 
     @Inject
     private Logger log;
+
+    public OGMSessionProducer() {
+        log = LoggerFactory.getLogger( getClass() ); // TODO: Replace by CDI
+        start();
+    }
 
     @PostConstruct
     public void start() {
