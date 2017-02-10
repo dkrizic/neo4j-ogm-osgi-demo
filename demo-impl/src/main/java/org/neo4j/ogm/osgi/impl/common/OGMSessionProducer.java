@@ -1,8 +1,9 @@
 package org.neo4j.ogm.osgi.impl.common;
 
-import com.prodyna.pa.neo4j.service.BasePackage;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.drivers.bolt.driver.BoltDriver;
+import org.neo4j.ogm.osgi.demo.BasePackage;
+import org.neo4j.ogm.osgi.demo.Product;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.slf4j.Logger;
@@ -28,10 +29,11 @@ public class OGMSessionProducer {
         log.info("Starting");
         configuration = new Configuration();
         configuration.driverConfiguration().setDriverClassName( driverClass.getName() )
-            .setURI("bolt://localhost").setCredentials("neo4j", "abc123");
+            .setURI("bolt://localhost");
         log.info("Configured as " + configuration);
         String packageName = BasePackage.class.getPackage().getName();
-        sessionFactory = new SessionFactory(configuration, packageName, "WEB-INF.classes." + packageName );
+        // sessionFactory = new SessionFactory(configuration, packageName, "WEB-INF.classes." + packageName );
+        sessionFactory = new SessionFactory(configuration, Product.class );     // no scanning, direct announcing the classes
         log.info("Session factory created " + sessionFactory);
     }
 

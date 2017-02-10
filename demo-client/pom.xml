@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ogm-osgi-demo-api</artifactId>
+    <artifactId>ogm-osgi-demo-client</artifactId>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -20,31 +20,25 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-api</artifactId>
-            <version>2.1.2-SNAPSHOT</version>
+            <groupId>org.neo4j.ogm</groupId>
+            <artifactId>ogm-osgi-demo-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>2.3.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Packages>org.neo4j.ogm.osgi.demo</Export-Packages>
-                        <Fragment-Host>neo4j-ogm-api</Fragment-Host>
+                        <Activator>org.neo4j.ogm.osgi.demo.client.Activator</Activator>
                     </instructions>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
