@@ -9,12 +9,13 @@ https://github.com/neo4j/neo4j-ogm/issues/255#issuecomment-252522394
 
 Then build this project and deploy
 
-demo-api.jar
-demo-impl.jar
-demo-client.jar
+* demo-api.jar
+* demo-impl.jar
+* demo-client.jar
 
 It should look like:
 
+```
 karaf@root()> list | grep Neo4j
  52 | Active   |  80 | 1.1.1.v20170119-2132 | Neo4j Java Driver
 108 | Active   |  80 | 2.1.2.SNAPSHOT       | Neo4j-OGM API, Fragments: 112, 113
@@ -25,9 +26,11 @@ karaf@root()> list | grep Neo4j
 113 | Resolved |  80 | 2.1.2.SNAPSHOT       | Neo4j-OGM Core, Hosts: 108
 114 | Resolved |  80 | 1.0.0.SNAPSHOT       | Neo4j-OGM Demo Client
 115 | Active   |  80 | 1.0.0.SNAPSHOT       | Neo4j-OGM Demo Impl
+```
 
 Ensure that Neo4j >= 3.0 is running on localhost and import the Northwind database. Start the bundle Neo4j-OGM Demo Client (in this case 114)
 
+```
 karaf@root()> start 114
 Product{id=0, productName='Chai', unitsInStock=39}
 Product{id=1, productName='Chang', unitsInStock=17}
@@ -106,12 +109,11 @@ Product{id=73, productName='Longlife Tofu', unitsInStock=4}
 Product{id=74, productName='Rhönbräu Klosterbier', unitsInStock=125}
 Product{id=75, productName='Lakkalikööri', unitsInStock=57}
 Product{id=76, productName='Original Frankfurter grüne Soße', unitsInStock=32}
+```
 
 How does it work?
 =================
 
-"Neo4j-OGM Demo API" provides a @NodeEntity Product and marks itself a fragment to "Neo4j-OGM API", so the class loader of "Neo4j-OGM API" is extended at runtime and is able to see our entity. 
-
-"Neo4j-OGM Demo Impl" actually uses "Neo4j-OGM Core" and registeres a "ProductService"
-
-"Neo4j-OGM Demo Client" looks up "ProductService" and calls it.
+* "Neo4j-OGM Demo API" provides a @NodeEntity Product and marks itself a fragment to "Neo4j-OGM API", so the class loader of "Neo4j-OGM API" is extended at runtime and is able to see our entity. 
+* "Neo4j-OGM Demo Impl" actually uses "Neo4j-OGM Core" and registeres a "ProductService"
+* "Neo4j-OGM Demo Client" looks up "ProductService" and calls it.
