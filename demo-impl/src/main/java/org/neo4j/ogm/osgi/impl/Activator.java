@@ -7,14 +7,14 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
-        System.out.println("HelloActivator::start");
+        System.out.println("Registering ProductService");
         context.registerService(ProductService.class.getName(), new ProductServiceImpl(), null);
-        System.out.println("HelloActivator::registration of Hello service successful");
+        System.out.println("ProductService registered");
     }
 
     public void stop(BundleContext context) throws Exception {
         context.ungetService(context.getServiceReference(ProductService.class.getName()));
-        System.out.println("HelloActivator stopped");
+        System.out.println("ProductService unregistered");
     }
 
 
