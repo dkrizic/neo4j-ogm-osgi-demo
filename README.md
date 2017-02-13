@@ -1,13 +1,24 @@
 Demo for Neo4j-OGM inside an OSGi container
 
-Requirements
-============
+Basic requirements
+==================
 
 Install and configure Karaf with Neo4j-OGM as described here:
 
 https://github.com/neo4j/neo4j-ogm/issues/255#issuecomment-252522394
 
-Then build this project and deploy
+
+Method 1: No scanning (easier)
+==============================
+
+This method uses the new feature of Neo4j-OGM, that required classes can be registered directly. This avoids any kind of scanning, which
+is really complicated in OSGi. So it is easier. Even larger projects seldom have more than 20 to 30 classes, that needs to be registered
+so I personally think this is the way to go.
+
+Setup and test
+--------------
+
+Clone and build this project, deploy
 
 * demo-api.jar
 * demo-impl.jar
@@ -112,8 +123,83 @@ Product{id=76, productName='Original Frankfurter grüne Soße', unitsInStock=32}
 ```
 
 How does it work?
-=================
+-----------------
 
 * "Neo4j-OGM Demo API" provides a @NodeEntity Product and marks itself a fragment to "Neo4j-OGM API", so the class loader of "Neo4j-OGM API" is extended at runtime and is able to see our entity. 
 * "Neo4j-OGM Demo Impl" actually uses "Neo4j-OGM Core" and registeres a "ProductService"
+* "Neo4j-OGM Demo Impl" registeres the class "Product.class" directly with OGM so no classpath scannig us done.
 * "Neo4j-OGM Demo Client" looks up "ProductService" and calls it.
+
+Method 2: Scanning (more complex)
+=================================
+
+If you really need classpath scanning of all your annotated entities (@NodeEntity and @RelationshipEntity), then it is basically possible, but
+currently only in the Equinox OSGi container.
+
+Setup and test
+--------------
+
+Additionally install "Neo4j-OGM Equinox Resolver" as bundle to the OSGi container and install those bundles from this project:
+
+* demo-api.jar
+* demo-impl2.jar <- Note the 2 here
+* demo-client.jar
+
+The only difference between demo-impl.jar and demo-impl2.jar is the followoing code
+
+For automatic scanning used in this method:
+
+```
+        sessionFactory = new SessionFactory(configuration, packageName, "WEB-INF.classes." + packageName );
+```
+
+against statically registered to avoid any scanning
+
+```
+        sessionFactory = new SessionFactory(configuration, Product.class );     // no scanning, direct announcing the classes
+```
+
+The complexity is, that Neo4j-OGM Equinox Resolver requires a few more dependencies. So we need to add:
+
+* TODO: Liste the required bundles (or feel free to find them out by yourself :-) )
+
+The test is identical as above, the result should be the same.
+
+Trying to start bundle "Neo4j-OGM Demo Impl2" without "Neo4j-OGM Equinox Resolver" leads to the following:
+
+```
+2017-02-13 11:58:56,807 | ERROR | nsole user karaf | ShellUtil                        | 43 - org.apache.karaf.shell.core - 4.0.8 | Exception caught while executing command
+org.apache.karaf.shell.support.MultiException: Error executing command on bundles:
+	Error starting bundle 132: Exception in org.neo4j.ogm.osgi.impl.Activator.start() of bundle org.neo4j.ogm.osgi-demo-impl2.
+	at org.apache.karaf.shell.support.MultiException.throwIf(MultiException.java:61)
+    ...
+	at java.lang.Thread.run(Thread.java:745)[:1.8.0_112]
+Caused by: java.lang.Exception: Error starting bundle 132: Exception in org.neo4j.ogm.osgi.impl.Activator.start() of bundle org.neo4j.ogm.osgi-demo-impl2.
+	at org.apache.karaf.bundle.command.BundlesCommand.doExecute(BundlesCommand.java:66)[23:org.apache.karaf.bundle.core:4.0.8]
+	... 12 more
+Caused by: org.osgi.framework.BundleException: Exception in org.neo4j.ogm.osgi.impl.Activator.start() of bundle org.neo4j.ogm.osgi-demo-impl2.
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:792)[org.eclipse.osgi-3.10.101.v20150820-1432.jar:]
+    ...
+	at org.apache.karaf.bundle.command.BundlesCommand.doExecute(BundlesCommand.java:64)[23:org.apache.karaf.bundle.core:4.0.8]
+	... 12 more
+Caused by: java.lang.RuntimeException: org.neo4j.ogm.exception.ServiceNotFoundException: Resource: bundleresource://108.fwk1714078840:1/org/neo4j/ogm/osgi/demo/
+	at org.neo4j.ogm.utils.ClassUtils.getUniqueClasspathElements(ClassUtils.java:172)
+	...
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$3.run(BundleContextImpl.java:1)[org.eclipse.osgi-3.10.101.v20150820-1432.jar:]
+	at java.security.AccessController.doPrivileged(Native Method)[:1.8.0_112]
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:764)[org.eclipse.osgi-3.10.101.v20150820-1432.jar:]
+	... 20 more
+Caused by: org.neo4j.ogm.exception.ServiceNotFoundException: Resource: bundleresource://108.fwk1714078840:1/org/neo4j/ogm/osgi/demo/
+	at org.neo4j.ogm.service.ResourceService.resolve(ResourceService.java:49)
+	at org.neo4j.ogm.utils.ClassUtils.getUniqueClasspathElements(ClassUtils.java:169)
+	... 34 more
+```
+
+How does it work?
+-----------------
+* "Neo4j-OGM Equinox Resolver" registers itself as resolver for "bundleresource" and uses the Equinox specific class org.eclipse.core.runtime.FileLocator to find
+the actual file location of the bundle and returns an URL with file://. This can be handled by OGM and the scanning works. 
+* "Neo4j-OGM Core" gets a file:// URL and can open and scan it normally.
+
+This solution is specific to Equinox. Other contains e.g. Felix are not supported. Felix internally returns and URL with "bundle" and I did not find a way how to
+convert that to a "file", yet. 
