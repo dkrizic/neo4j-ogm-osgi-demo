@@ -12,6 +12,7 @@
     <modules>
         <module>demo-api</module>
         <module>demo-impl</module>
+        <module>demo-impl2</module>
         <module>demo-client</module>
     </modules>
 
